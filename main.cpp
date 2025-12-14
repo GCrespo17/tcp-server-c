@@ -11,15 +11,15 @@ int main(){
     int socketFileDescriptor{};
     constexpr int defaultProtocol{0};
 
-    socketFileDescriptor = handleSocketCreation(AF_INET, SOCK_STREAM, defaultProtocol);
+    socketFileDescriptor = createSocket(AF_INET, SOCK_STREAM, defaultProtocol);
 
     mySocketAddress.sin_family = AF_INET;
     mySocketAddress.sin_addr.s_addr = INADDR_ANY;
     mySocketAddress.sin_port = htons(port);
 
 
-    handleBindingSocket(socketFileDescriptor, &mySocketAddress);
-    handleListening(socketFileDescriptor, maximumConnections, port);
+    bindSocket(socketFileDescriptor, reinterpret_cast<const struct sockaddr *> (&mySocketAddress));
+    listenToMessages(socketFileDescriptor, maximumConnections, port);
 
     return 0;
 }
